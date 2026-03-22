@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { StatusBadge } from '@/components/ui/status-badge';
 import { StatCard } from '@/components/ui/stat-card';
 import { Shield, UserPlus, Users, Search, ToggleLeft, ToggleRight } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/components/ui/dialog';
 
 import { useToast } from '@/hooks/use-toast';
 
@@ -73,6 +73,7 @@ export default function UserManagement() {
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
                 <DialogTitle>Create HR Account</DialogTitle>
+                <DialogDescription className="sr-only">Fill out the form below to add a new HR user.</DialogDescription>
               </DialogHeader>
               <form onSubmit={handleCreateHR} className="space-y-4 mt-2">
                 <div className="space-y-2">

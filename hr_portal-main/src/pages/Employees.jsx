@@ -7,10 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Search, Plus, Edit2, Trash2, Users } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useToast } from '@/hooks/use-toast';
-
 
 const departments = ['Engineering', 'Design', 'Marketing', 'HR', 'Finance', 'Sales', 'QA', 'DevOps'];
 const positions = ['Developer', 'Senior Developer', 'Tech Lead', 'Tester', 'QA Engineer', 'Designer', 'Manager', 'Analyst'];
@@ -110,6 +108,7 @@ export default function Employees() {
               <DialogContent className="sm:max-w-lg">
                 <DialogHeader>
                   <DialogTitle>{editingId ? 'Edit Employee' : 'Add New Employee'}</DialogTitle>
+                  <DialogDescription className="sr-only">Fill out the form below to {editingId ? 'edit the' : 'add a new'} employee.</DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4 mt-2">
                   <div className="grid grid-cols-2 gap-4">

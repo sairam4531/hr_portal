@@ -22,9 +22,10 @@ const statusStyles = {
 };
 
 export function StatusBadge({ status }) {
+  const safeStatus = status || 'unknown';
   return (
-    <span className={cn('inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize', statusStyles[status] || 'bg-muted text-muted-foreground')}>
-      {status.replace('-', ' ')}
+    <span className={cn('inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize', statusStyles[safeStatus] || 'bg-muted text-muted-foreground')}>
+      {safeStatus.replace('-', ' ')}
     </span>);
 
 }
