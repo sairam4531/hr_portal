@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Search, Plus, Edit2, Trash2, Users } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useToast } from '@/hooks/use-toast';
 
 const departments = ['Engineering', 'Design', 'Marketing', 'HR', 'Finance', 'Sales', 'QA', 'DevOps'];
 const positions = ['Developer', 'Senior Developer', 'Tech Lead', 'Tester', 'QA Engineer', 'Designer', 'Manager', 'Analyst'];
