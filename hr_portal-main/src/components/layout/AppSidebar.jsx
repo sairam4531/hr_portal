@@ -4,7 +4,8 @@ import {
 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 import { useLocation } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectCurrentUser, logout } from '@/store/authSlice';
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
   SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarFooter, useSidebar } from
@@ -40,7 +41,8 @@ export function AppSidebar() {
   const { state, toggleSidebar } = useSidebar();
   const collapsed = state === 'collapsed';
   const location = useLocation();
-  const { user, logout } = useAuth();
+  const user = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
 
   const visibleItems = navItems.filter((item) => user && item.roles.includes(user.role));
 
@@ -114,7 +116,7 @@ export function AppSidebar() {
           </div>
         }
         <button
-          onClick={logout}
+          onClick={() => dispatch(logout())}
           className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors w-full">
           
           <LogOut className="h-[18px] w-[18px]" />

@@ -1,5 +1,6 @@
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser, selectIsAuthenticated } from '@/store/authSlice';
 
 
 
@@ -7,15 +8,8 @@ import { useAuth } from '@/context/AuthContext';
 
 
 export function ProtectedRoute({ children, allowedRoles }) {
-  const { isAuthenticated, user, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin" />
-      </div>);
-
-  }
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const user = useSelector(selectCurrentUser);
 
   if (!isAuthenticated) return <Navigate to="/login" replace />;
 

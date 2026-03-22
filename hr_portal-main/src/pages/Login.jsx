@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
+import { useDispatch } from 'react-redux';
+import { useLoginMutation } from '@/store/authApiSlice';
+import { setCredentials } from '@/store/authSlice';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,27 +12,21 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [login, { isLoading }] = useLoginMutation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
     try {
-      await login(email, password);
+      const userData = await login({ email, password }).unwrap();
+      dispatch(setCredentials(userData));
       navigate('/dashboard');
-    } catch {
-      setError('Invalid email or password');
-    } finally {
-      setLoading(false);
+    } catch (err) {
+      setError(err?.data?.message || 'Invalid username or password');
     }
-  };
-
-  const quickLogin = (email, pw) => {
-    setEmail(email);
-    setPassword(pw);
   };
 
   return (
@@ -87,40 +83,19 @@ export default function Login() {
             <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-lg font-medium">{error}</div>
             }
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+              <Label htmlFor="email">Username or Email</Label>
+              <Input id="email" type="text" placeholder="you@company.com or username" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <Input id="password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? 'Signing in…' : 'Sign in'}
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? 'Signing in…' : 'Sign in'}
             </Button>
           </form>
 
-          <div className="space-y-2 bg-secondary rounded-xl p-4">
-            <p className="text-xs font-semibold text-foreground">Quick login (demo):</p>
-            <div className="grid gap-1.5">
-              {[
-              { label: 'IT Admin', email: 'admin@hrportal.com', pw: 'admin123', color: 'text-primary' },
-              { label: 'HR Manager', email: 'hr@hrportal.com', pw: 'hr123', color: 'text-accent' },
-              { label: 'Employee', email: 'employee@hrportal.com', pw: 'emp123', color: 'text-success' }].
-              map((acc) =>
-              <button
-                key={acc.email}
-                type="button"
-                onClick={() => quickLogin(acc.email, acc.pw)}
-                className="text-left text-xs px-3 py-2 rounded-lg hover:bg-background transition-colors">
-                
-                  <span className={`font-semibold ${acc.color}`}>{acc.label}</span>
-                  <span className="text-muted-foreground ml-2">{acc.email}</span>
-                </button>
-              )}
-            </div>
-          </div>
         </div>
       </div>
     </div>);
-
 }

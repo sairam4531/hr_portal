@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { AppLayout } from '@/components/layout/AppLayout';
-import { useAuth } from '@/context/AuthContext';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '@/store/authSlice';
 import { StatusBadge } from '@/components/ui/status-badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,7 +16,7 @@ const departments = ['Engineering', 'Design', 'Marketing', 'HR', 'Finance', 'Sal
 const positions = ['Developer', 'Senior Developer', 'Tech Lead', 'Tester', 'QA Engineer', 'Designer', 'Manager', 'Analyst'];
 
 export default function Employees() {
-  const { user } = useAuth();
+  const user = useSelector(selectCurrentUser);
   const { toast } = useToast();
   const [employees, setEmployees] = useState([]);
   const [search, setSearch] = useState('');

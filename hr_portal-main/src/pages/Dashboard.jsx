@@ -1,5 +1,6 @@
 import { AppLayout } from '@/components/layout/AppLayout';
-import { useAuth } from '@/context/AuthContext';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '@/store/authSlice';
 import { StatCard } from '@/components/ui/stat-card';
 
 import { Users, UserCheck, CalendarOff, Briefcase, DollarSign, Star, Shield, Clock } from 'lucide-react';
@@ -10,7 +11,7 @@ const emptyChart = [];
 const emptyDept = [];
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  const user = useSelector(selectCurrentUser);
   const role = user?.role;
 
   return (

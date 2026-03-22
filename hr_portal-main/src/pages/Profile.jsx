@@ -1,5 +1,6 @@
 import { AppLayout } from "@/components/layout/AppLayout";
-import { useAuth } from "@/context/AuthContext";
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '@/store/authSlice';
 import { StatCard } from "@/components/ui/stat-card";
 import {
 
@@ -10,7 +11,7 @@ import {
 "lucide-react";
 
 export default function Profile() {
-  const { user } = useAuth();
+  const user = useSelector(selectCurrentUser);
 
   return (
     <AppLayout title="My Profile">

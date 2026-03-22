@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { AppLayout } from '@/components/layout/AppLayout';
-import { useAuth } from '@/context/AuthContext';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '@/store/authSlice';
 import { StatusBadge } from '@/components/ui/status-badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,7 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 
 
 export default function Leaves() {
-  const { user } = useAuth();
+  const user = useSelector(selectCurrentUser);
   const { toast } = useToast();
   const [leaves, setLeaves] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);

@@ -1,11 +1,12 @@
 import { AppLayout } from "@/components/layout/AppLayout";
-import { useAuth } from "@/context/AuthContext";
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '@/store/authSlice';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function HRSettings() {
-  const { user } = useAuth();
+  const user = useSelector(selectCurrentUser);
 
   return (
     <AppLayout title="Settings">

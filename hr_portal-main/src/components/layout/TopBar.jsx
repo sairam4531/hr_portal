@@ -1,9 +1,10 @@
 import { Bell, Search } from 'lucide-react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import { useAuth } from '@/context/AuthContext';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '@/store/authSlice';
 
 export function TopBar({ title }) {
-  const { user } = useAuth();
+  const user = useSelector(selectCurrentUser);
 
   return (
     <header className="h-14 border-b border-border bg-card flex items-center justify-between px-4 shrink-0">
