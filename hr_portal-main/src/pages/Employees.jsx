@@ -24,7 +24,7 @@ export default function Employees() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState({
-    name: '', email: '', phone: '', department: '', position: '', salary: '', joiningDate: ''
+    name: '', email: '', phone: '', department: '', position: '', salary: '', joiningDate: '', password: '', gender: ''
   });
 
   const canManage = user?.role === 'it-admin' || user?.role === 'hr';
@@ -71,7 +71,7 @@ export default function Employees() {
   };
 
   const resetForm = () => {
-    setForm({ name: '', email: '', phone: '', department: '', position: '', salary: '', joiningDate: '' });
+    setForm({ name: '', email: '', phone: '', department: '', position: '', salary: '', joiningDate: '', password: '', gender: '' });
     setEditingId(null);
     setDialogOpen(false);
   };
@@ -122,6 +122,25 @@ export default function Employees() {
                       <Input type="email" required value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} />
                     </div>
                   </div>
+                  {!editingId && (
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label>Password (Login)</Label>
+                        <Input type="password" required value={form.password} onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Gender</Label>
+                        <Select required value={form.gender} onValueChange={(v) => setForm((f) => ({ ...f, gender: v }))}>
+                          <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="male">Male</SelectItem>
+                            <SelectItem value="female">Female</SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  )}
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Phone</Label>

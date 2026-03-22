@@ -1,17 +1,42 @@
+import { useState } from 'react';
 import { AppLayout } from "@/components/layout/AppLayout";
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '@/store/authSlice';
 import { StatCard } from "@/components/ui/stat-card";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
 import {
-
   CalendarCheck,
   CalendarOff,
   Star,
-  DollarSign } from
-"lucide-react";
+  DollarSign,
+  Lock
+} from "lucide-react";
 
 export default function Profile() {
   const user = useSelector(selectCurrentUser);
+  const { toast } = useToast();
+  const [passwordForm, setPasswordForm] = useState({ current: '', new: '', confirm: '' });
+
+  const handlePasswordChange = async (e) => {
+    e.preventDefault();
+    if (passwordForm.new !== passwordForm.confirm) {
+      return toast({ title: 'Error', description: 'Passwords ignore match.', variant: 'destructive' });
+    }
+    if (passwordForm.new.length < 6) {
+      return toast({ title: 'Error', description: 'Password must be at least 6 characters.', variant: 'destructive' });
+    }
+    try {
+      const { default: userService } = await import('@/services/userService');
+      await userService.updateUser(user.id, { password: passwordForm.new });
+      toast({ title: 'Success', description: 'Your password has been changed securely.' });
+      setPasswordForm({ current: '', new: '', confirm: '' });
+    } catch {
+      toast({ title: 'Error', description: 'Could not change password.', variant: 'destructive' });
+    }
+  };
 
   return (
     <AppLayout title="My Profile">
@@ -70,12 +95,23 @@ export default function Profile() {
         </div>
 
         <div className="bg-card border border-border rounded-xl p-6">
-          <h3 className="font-semibold text-foreground mb-2">Quick Actions</h3>
-          <p className="text-sm text-muted-foreground">
-            Use the sidebar to apply for leave, view your attendance history,
-            check payslips, and read performance feedback. Data will appear once
-            your HR manager adds records to the system.
+          <h3 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+            <Lock className="h-4 w-4" /> Security
+          </h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            Update your account password.
           </p>
+          <form onSubmit={handlePasswordChange} className="space-y-4 max-w-sm">
+            <div className="space-y-2">
+              <Label>New Password</Label>
+              <Input type="password" required value={passwordForm.new} onChange={(e) => setPasswordForm(f => ({...f, new: e.target.value}))} />
+            </div>
+            <div className="space-y-2">
+              <Label>Confirm New Password</Label>
+              <Input type="password" required value={passwordForm.confirm} onChange={(e) => setPasswordForm(f => ({...f, confirm: e.target.value}))} />
+            </div>
+            <Button type="submit">Change Password</Button>
+          </form>
         </div>
       </div>
     </AppLayout>);

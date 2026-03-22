@@ -1,4 +1,5 @@
 const Employee = require('../models/Employee');
+const User = require('../models/User');
 
 exports.getEmployees = async (req, res) => {
   try {
@@ -24,7 +25,28 @@ exports.getEmployeeById = async (req, res) => {
 
 exports.createEmployee = async (req, res) => {
   try {
-    const employee = new Employee(req.body);
+    const { name, email, password, gender, ...employeeData } = req.body;
+    
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({ message: 'Email is already taken for login' });
+    }
+
+    const user = await User.create({
+      name,
+      email,
+      password,
+      role: 'employee',
+      gender
+    });
+
+    const employee = new Employee({
+      ...employeeData,
+      name,
+      email,
+      userId: user._id
+    });
+    
     const createdEmployee = await employee.save();
     res.status(201).json(createdEmployee);
   } catch (error) {

@@ -19,7 +19,7 @@ export default function UserManagement() {
   const [hrUsers, setHrUsers] = useState([]);
   const [search, setSearch] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [form, setForm] = useState({ name: '', email: '', password: '', phone: '', department: '' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', phone: '', department: '', gender: '' });
 
   const handleCreateHR = async (e) => {
     e.preventDefault();
@@ -28,7 +28,7 @@ export default function UserManagement() {
       const res = await userService.createHR(form);
       setHrUsers((prev) => [...prev, res.data]);
       setDialogOpen(false);
-      setForm({ name: '', email: '', password: '', phone: '', department: '' });
+      setForm({ name: '', email: '', password: '', phone: '', department: '', gender: '' });
       toast({ title: 'HR account created', description: `${form.name} has been added as HR.` });
     } catch {
       toast({ title: 'Error', description: 'Could not create HR account. Make sure the backend is running.', variant: 'destructive' });
@@ -83,9 +83,22 @@ export default function UserManagement() {
                   <Label>Email</Label>
                   <Input type="email" required value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} />
                 </div>
-                <div className="space-y-2">
-                  <Label>Password</Label>
-                  <Input type="password" required minLength={6} value={form.password} onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))} />
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Password</Label>
+                    <Input type="password" required minLength={6} value={form.password} onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Gender</Label>
+                    <Select required value={form.gender} onValueChange={(v) => setForm((f) => ({ ...f, gender: v }))}>
+                      <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="male">Male</SelectItem>
+                        <SelectItem value="female">Female</SelectItem>
+                        <SelectItem value="other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <Label>Phone</Label>
